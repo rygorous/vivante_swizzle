@@ -1,0 +1,27 @@
+I wrote the post "Texture tiling and swizzling" (http://fgiesen.wordpress.com/2011/01/17/texture-tiling-and-swizzling/)
+almost exactly 3 years ago, but I never did a proper example, simply because all the actual
+implementations of that technique that I'd written up to that point were for hardware
+covered by NDAs.
+
+Well, today I got a question about this relating to the "Supertiling" scheme used by Vivante
+chips (https://github.com/laanwj/etna_viv/blob/master/doc/hardware.md#texture-tiling). As it
+happens, that scheme matches the model described in the article exactly, is relatively simple,
+and most importantly, I've never signed any NDAs with (or gotten hardware docs from) Vivante,
+so there shouldn't be any legal problems.
+
+So here goes: a full implementation of the technique as intended, for a format used by
+actual existing GPU hardware, plus small test driver.
+
+This code is optimized for readability not maximum performance; but I think it shows off the
+key ideas quite well. In particular, I really want to emphasize that, within the model described
+in my blog post, the code snippets are *completely generic*. All knowledge about the texture layout
+is contained in the "swizzle_*" functions and the (small) unrolled inner loop for the aligned
+center part in "swizzle_32bpp". And none of these functions get called inside the inner loops,
+so it really is possible to write a generic swizzler, passing in the "swizzle_*" functions as an
+interface, function pointers or the like.
+
+This code only implements RGBA/RGBx formats with 32 bits per pixel, since that's what was described
+in the docs. However, again, this requirement is fairly superficial. The same approach can be used
+with different bits per pixel; you'd probably want one set of inner loops for every bit depth used.
+
+- Fabian "ryg" Giesen, January 2014

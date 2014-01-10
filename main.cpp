@@ -33,7 +33,7 @@ static void storepixel4(uint32_t *dest, pixel4_t vals)
 //
 //        (bit index)    c  b a 9 8 7 6 5 4 3 2 1 0
 // index_x_tile = tile_idx:____x5x4x3____x2____x1x0
-// index_y_tile = _________y5y4______y3y2__y1y0____
+// index_y      = _________y5y4______y3y2__y1y0____
 
 // width of the "outermost" tile (i.e. supertile in this case)
 static uintptr_t swizzle_outermost_tile_w()
